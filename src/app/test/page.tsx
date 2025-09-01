@@ -1,9 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function TestPage() {
+export const dynamic = "force-dynamic";
+
+function TestInner() {
   const sp = useSearchParams();
   const initialKey = sp.get("key") ?? "";
   const [key, setKey] = useState(initialKey);
@@ -94,5 +96,13 @@ export default function TestPage() {
         </section>
       )}
     </main>
+  );
+}
+
+export default function TestPage() {
+  return (
+    <Suspense fallback={<main style={{ padding: 24 }}>Loading…</main>}>
+      <TestInner />
+    </Suspense>
   );
 }
